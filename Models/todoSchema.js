@@ -9,6 +9,8 @@ const todoSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   }
+}, {
+  timestamps: true,
 });
 
 const Todo = mongoose.model("Todo", todoSchema);
