@@ -2,12 +2,17 @@
 import express from 'express';
 
 // Internal imports
-import { createUser, deleteUser } from '../Controllers/userController';
+import { createUser, deleteUser, login } from '../Controllers/userController.js';
 
 const router = express.Router();
 
-// Create a new user
-router.post("/", createUser);
+// Signup
+router.post("/signup", createUser);
 
 // Delete an user
 router.delete("/:id", deleteUser);
+
+// Login
+router.post("/login", login);
+
+export default router;

@@ -1,11 +1,12 @@
 // External imports
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // Internal imports
-import User from "../Models/userSchema";
+import People from "../Models/peopleSchema.js";
 
 // Create user
-export const createUser = async (req, res) => {
+export const createUser = async(req, res) => {
   try {
     const { username, password } = req.body;
     
@@ -28,7 +29,7 @@ export const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create and save the new user
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new People({ username, password: hashedPassword });
     await newUser.save();
 
     res.status(201).json({
@@ -43,7 +44,7 @@ export const createUser = async (req, res) => {
 // Delete user
 export const deleteUser = async(req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await People.findByIdAndDelete(req.params.id);
 
     // If the user doesnt exist
     if (!user) {
@@ -59,3 +60,46 @@ export const deleteUser = async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Login to an existing user
+export const login = async(req, res) => {
+  try {
+    // Get data from the request body
+    const { username, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({
+        "message": "Authentication failed!"
+      })
+    };
+
+    // Compare the password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        "message": "Authentication failed!"
+      })
+    };
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        username: user.username,
+        userId: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h'
+      }
+    );
+
+    res.status(200).json({
+      "access_token": token,
+      "message": "Login successful"
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
