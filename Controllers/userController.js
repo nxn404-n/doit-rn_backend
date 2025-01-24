@@ -18,7 +18,7 @@ export const createUser = async(req, res) => {
     }
 
     // Check if the username is already taken
-    const existingUser = await User.findOne({ username });
+    const existingUser = await People.findOne({ username });
     if (existingUser) {
       return res.status(409).json({
         error: "Username is already taken"
@@ -68,7 +68,7 @@ export const login = async(req, res) => {
     const { username, password } = req.body;
 
     // Check if user exists
-    const user = await User.findOne({ username });
+    const user = await People.findOne({ username });
     if (!user) {
       return res.status(401).json({
         "message": "Authentication failed!"
