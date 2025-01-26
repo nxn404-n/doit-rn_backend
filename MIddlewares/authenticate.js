@@ -16,7 +16,9 @@ const authenticate = (req, res, next) => {
     req.userId = userId;
     next();
   } catch {
-    next("Authentication failed!")
+    res.status(500).json({
+      message: "There was an server side error!"
+    })
   }
 };
 

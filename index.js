@@ -6,6 +6,7 @@ import cors from 'cors';
 
 // Internal imports
 import userRouter from './Routes/userRoute.js';
+import todoRouter from './Routes/todoRoute.js';
 
 const app = express();
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.json());
 
 // Routers
 app.use('/api/user', userRouter);
+app.use('/api/todo', todoRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
