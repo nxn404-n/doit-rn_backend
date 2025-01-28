@@ -4,11 +4,13 @@ import jwt from 'jsonwebtoken';
 
 // Internal imports
 import People from "../Models/peopleSchema.js";
+import { generateAndSetToken } from '../Helpers/generateAndSetToken.js';
 
 // Create user
 export const createUser = async(req, res) => {
   try {
     const { username, password } = req.body;
+    const lowercaseUsername = username.toLowerCase();
     
     // Validate input
     if (!username || !password) {
@@ -18,7 +20,7 @@ export const createUser = async(req, res) => {
     }
 
     // Check if the username is already taken
-    const existingUser = await People.findOne({ username });
+    const existingUser = await People.findOne({ username:lowercaseUsername });
     if (existingUser) {
       return res.status(409).json({
         error: "Username is already taken"
@@ -29,8 +31,11 @@ export const createUser = async(req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create and save the new user
-    const newUser = new People({ username, password: hashedPassword });
+    const newUser = new People({ username:lowercaseUsername, password: hashedPassword });
     await newUser.save();
+
+    // Generate and set JWT token in cookies
+    generateAndSetToken(newUser, res)
 
     res.status(201).json({
       message: "User created successfully",
@@ -53,7 +58,7 @@ export const deleteUser = async(req, res) => {
       });
     }
     
-    res.status(204).json({
+    res.status(200).json({
       message: "User was removed successfully!"
     })
   } catch (error) {
@@ -66,9 +71,10 @@ export const login = async(req, res) => {
   try {
     // Get data from the request body
     const { username, password } = req.body;
+    const lowercaseUsername = username.toLowerCase();
 
     // Check if user exists
-    const user = await People.findOne({ username });
+    const user = await People.findOne({ username:lowercaseUsername });
     if (!user) {
       return res.status(401).json({
         "message": "Authentication failed!"
@@ -83,24 +89,8 @@ export const login = async(req, res) => {
       })
     };
 
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        username: user.username,
-        userId: user._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.EXPIRES_IN
-      }
-    );
-
-    // Saving token in cookie
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: process.env.EXPIRES_IN,
-    });
+    // Generate and set JWT token in cookies
+    generateAndSetToken(user, res)
 
     res.status(200).json({
       "message": "Login successful"
