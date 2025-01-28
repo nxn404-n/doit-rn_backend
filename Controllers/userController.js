@@ -91,12 +91,18 @@ export const login = async(req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: '1h'
+        expiresIn: process.env.EXPIRES_IN
       }
     );
 
+    // Saving token in cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: process.env.EXPIRES_IN,
+    });
+
     res.status(200).json({
-      "access_token": token,
       "message": "Login successful"
     })
   } catch (error) {
