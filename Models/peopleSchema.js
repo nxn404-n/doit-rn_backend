@@ -12,6 +12,7 @@ const peopleSchema = mongoose.Schema({
   },
   loggedIn: {
     type: Boolean,
+    default: false,
   },
   todos: [
     {

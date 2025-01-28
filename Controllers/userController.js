@@ -1,6 +1,5 @@
 // External imports
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 // Internal imports
 import People from "../Models/peopleSchema.js";
@@ -31,9 +30,11 @@ export const createUser = async(req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create and save the new user
-    const newUser = new People({ username:lowercaseUsername, password: hashedPassword });
+    // Create and save the new user and set loggedIn to true
+    const newUser = new People({ username:lowercaseUsername, password: hashedPassword, loggedIn: true });
     await newUser.save();
+
+
 
     // Generate and set JWT token in cookies
     generateAndSetToken(newUser, res)
@@ -79,8 +80,14 @@ export const login = async(req, res) => {
 
     // Check if user exists
     const user = await People.findOne({ username:lowercaseUsername });
-    if (!user) {
-      return res.status(401).json({
+    if (user) {
+      user.loggedIn = true;
+      await user.save();
+      res.status(200).json({
+        "message": "Logged out successfully!"
+      })
+    } else {
+      res.status(401).json({
         "message": "Authentication failed!"
       })
     };
@@ -98,6 +105,35 @@ export const login = async(req, res) => {
 
     res.status(200).json({
       "message": "Login successful"
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+// Log out
+export const logout = async(req, res) => {
+  try {
+    // Get data from the request params
+    const id = req.params.id;
+
+    // Check if user exists
+    const user = await People.findById(id);
+
+    if (user) {
+      user.loggedIn = false;
+      await user.save();
+      res.status(200).json({
+        "message": "Logged out successfully!"
+      })
+    } else {
+      res.status(401).json({
+        "message": "Authentication failed!"
+      })
+    };
+
+    res.status(200).json({
+      "message": "Log out successful"
     })
   } catch (error) {
     res.status(500).json({ error: error.message });
