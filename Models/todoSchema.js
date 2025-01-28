@@ -8,6 +8,11 @@ const todoSchema = mongoose.Schema({
     completed: {
       type: Boolean,
       default: false,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "People",
+      required: true,
     }
   },
   {

@@ -6,8 +6,8 @@ import { getAllTodo, createTodo, updateTodo, deleteTodo } from '../Controllers/t
 
 const router = express.Router();
 
-// Get all todo
-router.get("/", getAllTodo);
+// Get all todos of a user
+router.get("/:id", getAllTodo);
 
 // Create todo
 router.post("/", createTodo);

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 // Internal imports
 import People from "../Models/peopleSchema.js";
 import { generateAndSetToken } from '../Helpers/generateAndSetToken.js';
+import Todo from '../Models/todoSchema.js';
 
 // Create user
 export const createUser = async(req, res) => {
@@ -46,17 +47,20 @@ export const createUser = async(req, res) => {
   }
 };
 
-// Delete user
+// Delete user with its todos
 export const deleteUser = async(req, res) => {
   try {
-    const user = await People.findByIdAndDelete(req.params.id);
+    const userId = await People.findByIdAndDelete(req.params.id);
 
     // If the user doesnt exist
-    if (!user) {
+    if (!userId) {
       return res.status(404).json({
         error: "User not found",
       });
     }
+
+    // Delete associated todos
+    await Todo.deleteMany({userId})
     
     res.status(200).json({
       message: "User was removed successfully!"

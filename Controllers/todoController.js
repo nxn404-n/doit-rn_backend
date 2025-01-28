@@ -1,11 +1,15 @@
 // Internal imports
+import People from "../Models/peopleSchema.js";
 import Todo from "../Models/todoSchema.js";
 
-// Get all todos
+// Get all todos of a certain user
 export const getAllTodo = async (req, res) => {
   try {
-    const todos = await Todo.find();
-    res.status(200).json(todos);
+    const userId = req.params.id;
+
+    // Find todos of a certain user and populate the data
+    const todos = await Todo.find({ "user": userId }).populate("user", "username");
+    res.status(200).json({ todos });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -14,11 +18,22 @@ export const getAllTodo = async (req, res) => {
 // Create a new todo
 export const createTodo = async (req, res) => {
   try {
-    const { task } = req.body;
+    const { task, userId } = req.body;
 
     // Create and save todo 
-    const newTodo = Todo({ task });
+    const newTodo = Todo({
+      task,
+      user: userId
+    });
     await newTodo.save();
+
+    // Insert todo id in the user collection
+    await People.updateOne({ _id: userId },
+    {
+      $push: {
+        todos: newTodo._id
+      }
+    })
 
     res.status(201).json({
       "message": "Todo created successfully"

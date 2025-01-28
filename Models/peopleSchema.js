@@ -4,6 +4,7 @@ const peopleSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -11,7 +12,13 @@ const peopleSchema = mongoose.Schema({
   },
   loggedIn: {
     type: Boolean,
-  }
+  },
+  todos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Todo",
+    }
+  ]
 });
 
 const People = mongoose.model("People", peopleSchema);
