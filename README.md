@@ -16,6 +16,7 @@
   - [Usage](#usage)
   - [Run tests](#run-tests)
   - [Deployment](#triangular_flag_on_post-deployment)
+- [✅ How To Use](#howtouse)
 - [👥 Authors](#authors)
 - [🤝 Contributing](#contributing)
 - [⭐️ Show your support](#support)
@@ -75,6 +76,46 @@ Use <code>npm start</code> to deploy the project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## ✅ How to use <a name="howtouse"></a>
+
+### Signup
+- Method: POST
+- URL: https://doit-rn-backend.onrender.com/api/user/signup
+- Body: {"username": "",
+"password": ""}
+
+### Login
+- Method: POST
+- URL: https://doit-rn-backend.onrender.com/api/user/login
+- Body: {"username": "",
+"password": ""}
+
+### Logout
+- Method: POST
+- URL: https://doit-rn-backend.onrender.com/api/user/logout/:id(user id)
+
+### Delete account
+- Method: DELETE
+- URL: https://doit-rn-backend.onrender.com/api/user/:id(user id)
+
+### Post a todo
+- Method: POST
+- URL: https://doit-rn-backend.onrender.com/api/todo/:id(user id)
+- Body: {"task": ""}
+
+### Get all todos of an user
+- Method: GET
+- URL: https://doit-rn-backend.onrender.com/api/todo/:id(user id)
+- Body: {"task": ""}
+
+### Update a todo
+- Method: PUT
+- URL: https://doit-rn-backend.onrender.com/api/todo/:id(todo id)
+- Body: {"completed": ""}
+
+### Delete a todo
+- Method: DELETE
+- URL: https://doit-rn-backend.onrender.com/api/todo/:id(todo id)
 <!-- AUTHORS -->
 
 ## 👥 Authors <a name="authors"></a>

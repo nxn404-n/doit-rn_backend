@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/:id", getAllTodo);
 
 // Create todo
-router.post("/", createTodo);
+router.post("/:id", createTodo);
 
 // Update todo
 router.put("/:id", updateTodo);

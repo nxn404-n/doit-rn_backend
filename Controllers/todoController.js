@@ -7,6 +7,12 @@ export const getAllTodo = async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // Validate inputs
+    if (!userId) {
+      res.status(400).json({
+        error: "id is missing"
+      })
+    }
     // Find todos of a certain user and populate the data
     const todos = await Todo.find({ "user": userId }).populate("user", "username");
     res.status(200).json({ todos });
@@ -18,7 +24,15 @@ export const getAllTodo = async (req, res) => {
 // Create todo
 export const createTodo = async (req, res) => {
   try {
-    const { task, userId } = req.body;
+    const { task } = req.body;
+    const userId = req.params.id;
+
+    // Validate inputs
+    if (!task || !userId) {
+      res.status(400).json({
+        error: "Task or id is missing"
+      })
+    }
 
     // Create and save todo 
     const newTodo = Todo({
@@ -46,11 +60,18 @@ export const createTodo = async (req, res) => {
 // Update Todo
 export const updateTodo = async (req, res) => {
   try {
-    const id = req.params.id;
+    const todoId = req.params.id;
     const { completed } = req.body
+
+    // Validate inputs
+    if (!todoId || completed) {
+      res.status(400).json({
+        error: "id or completed missing"
+      })
+    }
   
     // Find and update the Todo
-    const updatedTodo = await Todo.updateOne({ _id: id }, {
+    const updatedTodo = await Todo.updateOne({ _id: todoId }, {
       $set : { completed }
     });
   
@@ -74,7 +95,14 @@ export const updateTodo = async (req, res) => {
 // Delete Todo
 export const deleteTodo = async (req, res) => {
   try {
-    const deletedTodo = await Todo.findByIdAndDelete(req.params.id);
+    const todoId = req.params.id;
+    // Validate inputs
+    if (!todoId) {
+      res.status(400).json({
+        error: "id is missing"
+      })
+    }
+    const deletedTodo = await Todo.findByIdAndDelete(todoId);
     
     // If the todo doesnt exist
     if (!deletedTodo) {
