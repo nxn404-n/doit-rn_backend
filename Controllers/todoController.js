@@ -15,7 +15,7 @@ export const getAllTodo = async (req, res) => {
   }
 }
 
-// Create a new todo
+// Create todo
 export const createTodo = async (req, res) => {
   try {
     const { task, userId } = req.body;

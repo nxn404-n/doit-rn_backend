@@ -6,7 +6,7 @@ import People from "../Models/peopleSchema.js";
 import { generateAndSetToken } from '../Helpers/generateAndSetToken.js';
 import Todo from '../Models/todoSchema.js';
 
-// Create user
+// Signup
 export const createUser = async(req, res) => {
   try {
     const { username, password } = req.body;
@@ -71,7 +71,7 @@ export const deleteUser = async(req, res) => {
   }
 };
 
-// Login to an existing user
+// Login
 export const login = async(req, res) => {
   try {
     // Get data from the request body

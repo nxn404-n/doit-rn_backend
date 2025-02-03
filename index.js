@@ -17,7 +17,7 @@ const PORT = process.env.PORT;
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
   .then(console.log("Connected to MongoDB successfully!!"))
-  .catch((err) => { console.log(err) })
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -27,5 +27,7 @@ app.use('/api/user', userRouter);
 app.use('/api/todo', todoRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  }
 });

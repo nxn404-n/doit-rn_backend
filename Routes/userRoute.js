@@ -17,7 +17,7 @@ router.post("/login", login);
 // Logout
 router.post("/logout/:id", logout);
 
-// Delete an user
+// Delete user
 router.delete("/:id", authenticate, deleteUser);
 
 export default router;
