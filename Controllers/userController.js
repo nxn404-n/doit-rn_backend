@@ -79,12 +79,18 @@ export const login = async(req, res) => {
     const lowercaseUsername = username.toLowerCase();
 
     // Check if user exists
-    const user = await People.findOne({ username:lowercaseUsername });
-    if (user) {
+    const user = await People.findOne({ username: lowercaseUsername });
+    
+    // Compare the password
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (user && isMatch) {
       user.loggedIn = true;
       await user.save();
+      // Generate and set JWT token in cookies
+      generateAndSetToken(user, res)
       res.status(200).json({
-        "message": "Logged out successfully!"
+        "message": "Logged in successfully!"
       })
     } else {
       res.status(401).json({
@@ -92,20 +98,6 @@ export const login = async(req, res) => {
       })
     };
 
-    // Compare the password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({
-        "message": "Authentication failed!"
-      })
-    };
-
-    // Generate and set JWT token in cookies
-    generateAndSetToken(user, res)
-
-    res.status(200).json({
-      "message": "Login successful"
-    })
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
