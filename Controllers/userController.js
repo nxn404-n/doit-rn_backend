@@ -40,8 +40,9 @@ export const createUser = async(req, res) => {
     generateAndSetToken(newUser, res)
 
     res.status(201).json({
-      message: "User created successfully",
-      user: { id: newUser._id, username: newUser.username }
+      "message": "User created successfully",
+      "user": { id: newUser._id, username: newUser.username },
+      "loggedIn": true
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -90,7 +91,8 @@ export const login = async(req, res) => {
       // Generate and set JWT token in cookies
       generateAndSetToken(user, res)
       res.status(200).json({
-        "message": "Logged in successfully!"
+        "message": "Logged in successfully!",
+        "loggedIn": user.loggedIn
       })
     } else {
       res.status(401).json({
@@ -116,7 +118,8 @@ export const logout = async(req, res) => {
       user.loggedIn = false;
       await user.save();
       res.status(200).json({
-        "message": "Logged out successfully!"
+        "message": "Logged out successfully!",
+        "loggedIn": user.loggedIn
       })
     } else {
       res.status(401).json({
