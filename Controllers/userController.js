@@ -96,7 +96,7 @@ export const login = async(req, res) => {
       })
     } else {
       res.status(401).json({
-        message: "Authentication failed!"
+        error: "Authentication failed!"
       })
     };
 
