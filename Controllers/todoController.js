@@ -50,7 +50,7 @@ export const createTodo = async (req, res) => {
     })
 
     res.status(201).json({
-      "message": "Todo created successfully"
+      message: "Todo created successfully"
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -78,12 +78,12 @@ export const updateTodo = async (req, res) => {
     // Check if todo was found and updated
     if (!updateTodo) {
       return res.status(404).json({
-        "error": "Todo was not found or no change made"
+        error: "Todo was not found or no change made"
       })
     };
 
     res.status(200).json({
-      "messege": "Todo was updated successfully!"
+      messege: "Todo was updated successfully!"
     });
   
   } catch (error) {
@@ -112,7 +112,7 @@ export const deleteTodo = async (req, res) => {
     };
 
     res.status(200).json({
-      "messege": "Todo was deleted succeessfully!"
+      messege: "Todo was deleted succeessfully!"
     })
 
   } catch (error) {
