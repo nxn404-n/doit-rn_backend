@@ -12,7 +12,7 @@ import todoRouter from './Routes/todoRoute.js';
 const app = express();
 dotenv.config();
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({credentials: true}));
 const PORT = process.env.PORT;
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
