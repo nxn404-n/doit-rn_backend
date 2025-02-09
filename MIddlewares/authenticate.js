@@ -20,7 +20,7 @@ const authenticate = (req, res, next) => {
     next();
   } catch (error) {
     res.status(401).json({
-      message: "Authentication failed!",
+      message: "JWT authentication failed!",
       error: error.message,
     });
   }
