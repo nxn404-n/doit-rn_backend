@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 // Internal imports
 import userRouter from './Routes/userRoute.js';
 import todoRouter from './Routes/todoRoute.js';
+import authRouter from './Routes/authRoute.js';
+
 
 const allowedOrigins = ["http://localhost:5173", "https://doit-rn.netlify.app"]
 
@@ -30,6 +32,7 @@ app.use(express.json());
 // Routers
 app.use('/api/user', userRouter);
 app.use('/api/todo', todoRouter);
+app.use("/api/auth", authRouter)
 
 app.listen(PORT, () => {
   if (process.env.NODE_ENV !== "production") {
