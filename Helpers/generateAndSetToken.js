@@ -19,6 +19,7 @@ export const generateAndSetToken = (user, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: "None",
+    partitioned: true,
     maxAge: process.env.EXPIRES_IN,
   });
 };
