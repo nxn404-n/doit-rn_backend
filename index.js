@@ -9,10 +9,15 @@ import cookieParser from 'cookie-parser';
 import userRouter from './Routes/userRoute.js';
 import todoRouter from './Routes/todoRoute.js';
 
+const allowedOrigins = ["http://localhost:5173/", "https://doit-rn.netlify.app/"]
+
 const app = express();
 dotenv.config();
 app.use(cookieParser());
-app.use(cors({credentials: true}));
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 const PORT = process.env.PORT;
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
