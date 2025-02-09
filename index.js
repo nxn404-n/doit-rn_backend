@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import userRouter from './Routes/userRoute.js';
 import todoRouter from './Routes/todoRoute.js';
 
-const allowedOrigins = ["http://localhost:5173/", "https://doit-rn.netlify.app/"]
+const allowedOrigins = ["http://localhost:5173", "https://doit-rn.netlify.app"]
 
 const app = express();
 dotenv.config();
