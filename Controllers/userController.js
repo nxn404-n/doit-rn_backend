@@ -92,7 +92,7 @@ export const login = async(req, res) => {
       generateAndSetToken(user, res)
       res.status(200).json({
         message: "Logged in successfully!",
-        user: { id: newUser._id, username: newUser.username },
+        user: { id: user._id, username: user.username },
         loggedIn: user.loggedIn
       })
     } else {
