@@ -118,6 +118,15 @@ export const logout = async(req, res) => {
     if (user) {
       user.loggedIn = false;
       await user.save();
+
+      // Clear the cookie
+      res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'None',
+        partitioned: true,
+      });
+      
       res.status(200).json({
         message: "Logged out successfully!",
         loggedIn: user.loggedIn
