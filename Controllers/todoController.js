@@ -64,7 +64,7 @@ export const updateTodo = async (req, res) => {
     const { completed } = req.body
 
     // Validate inputs
-    if (!todoId || !completed) {
+    if (!todoId || completed === undefined) {
        return res.status(400).json({
         error: "id or completed missing"
       })
