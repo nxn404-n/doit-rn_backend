@@ -65,7 +65,7 @@ export const updateTodo = async (req, res) => {
 
     // Validate inputs
     if (!todoId || completed) {
-      res.status(400).json({
+       return res.status(400).json({
         error: "id or completed missing"
       })
     }
@@ -76,7 +76,7 @@ export const updateTodo = async (req, res) => {
     });
   
     // Check if todo was found and updated
-    if (!updateTodo) {
+    if (!updatedTodo) {
       return res.status(404).json({
         error: "Todo was not found or no change made"
       })
