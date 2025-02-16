@@ -62,7 +62,15 @@ export const deleteUser = async(req, res) => {
     }
 
     // Delete associated todos
-    await Todo.deleteMany({userId})
+    await Todo.deleteMany({ userId })
+    
+    // Clear the cookie
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
+      partitioned: true,
+    });
     
     res.status(200).json({
       message: "User was removed successfully!"
