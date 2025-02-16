@@ -144,10 +144,6 @@ export const logout = async(req, res) => {
         error: "Authentication failed!"
       })
     };
-
-    res.status(200).json({
-      message: "Log out successful"
-    })
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
