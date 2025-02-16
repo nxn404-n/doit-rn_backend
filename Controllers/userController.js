@@ -62,7 +62,7 @@ export const deleteUser = async(req, res) => {
     }
 
     // Delete associated todos
-    await Todo.deleteMany({ _id: userId })
+    await Todo.deleteMany({ user: userId })
     
     // Clear the cookie
     res.clearCookie('jwt', {
